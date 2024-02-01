@@ -329,7 +329,7 @@ func (c *DocumentController) Create() {
 	parentId, _ := c.GetInt("parent_id", 0)
 	docId, _ := c.GetInt("doc_id", 0)
 	isOpen, _ := c.GetInt("is_open", 0)
-
+	//editoType, _ := c.GetInt("editor_type", 0)
 	if identify == "" {
 		c.JsonResult(6001, i18n.Tr(c.Lang, "message.param_error"))
 	}
@@ -387,13 +387,16 @@ func (c *DocumentController) Create() {
 	document.Version = time.Now().Unix()
 	document.DocumentName = docName
 	document.ParentId = parentId
-
+	document.EditorType = 0
 	if isOpen == 1 {
 		document.IsOpen = 1
 	} else if isOpen == 2 {
 		document.IsOpen = 2
-	} else {
+	} else if isOpen == 0 {
 		document.IsOpen = 0
+	} else {
+		document.IsOpen = isOpen
+		document.EditorType = 1
 	}
 
 	if err := document.InsertOrUpdate(); err != nil {
@@ -861,6 +864,7 @@ func (c *DocumentController) Content() {
 	}
 
 	c.JsonResult(0, "ok", doc)
+	c.Data["EditorType"] = doc.EditorType
 }
 
 // Export 导出

@@ -267,4 +267,10 @@ func init() {
 	web.Router("/items", &controllers.ItemsetsController{}, "get:Index")
 	web.Router("/items/:key", &controllers.ItemsetsController{}, "get:List")
 
+	vueStaticDir, _ := web.AppConfig.String("vueStaticDir")
+	web.SetStaticPath("/vue-admin", vueStaticDir+"index.html")
+	web.SetStaticPath("/vue-admin/css", vueStaticDir+"css")
+	web.SetStaticPath("/vue-admin/fonts", vueStaticDir+"fonts")
+	web.SetStaticPath("/vue-admin/img", vueStaticDir+"img")
+	web.SetStaticPath("/vue-admin/js", vueStaticDir+"js")
 }

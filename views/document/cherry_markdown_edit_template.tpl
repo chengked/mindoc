@@ -122,6 +122,21 @@
                             <input type="radio" name="is_open" value="2"> {{i18n .Lang "doc.empty_contents"}}<span class="text">{{i18n .Lang "doc.empty_contents_desc"}}</span>
                         </label>
                     </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="2"> {{i18n .Lang "doc.word_contents"}}<span class="text">{{i18n .Lang "doc.word_contents_desc"}}</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="2"> {{i18n .Lang "doc.excel_contents"}}<span class="text">{{i18n .Lang "doc.excel_contents_desc"}}</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="2"> {{i18n .Lang "doc.ppt_contents"}}<span class="text">{{i18n .Lang "doc.ppt_contents_desc"}}</span>
+                        </label>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
             </div>

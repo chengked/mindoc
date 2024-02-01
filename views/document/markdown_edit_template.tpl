@@ -59,6 +59,9 @@
 <body>
 
 <div class="m-manual manual-editor">
+{{/*
+    markdown编辑器的头部
+*/}}
     <div class="manual-head" id="editormd-tools" style="min-width: 1200px; position:absolute;">
         <div class="editormd-group">
             <!--a href="{{urlfor "BookController.Index"}}" data-toggle="tooltip" data-title="{{i18n .Lang "doc.backward"}}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a-->
@@ -100,7 +103,7 @@
 
         </div>
 
-        <div class="editormd-group pull-right">
+        <div class="editormd-group">
             <a href="javascript:;" data-toggle="tooltip" data-title="{{i18n .Lang "doc.close_preview"}}"><i class="fa fa-eye-slash first" name="watch" unselectable="on"></i></a>
             <a href="javascript:;" data-toggle="tooltip" data-title="{{i18n .Lang "doc.modify_history"}}"><i class="fa fa-history item" name="history" aria-hidden="true"></i></a>
             <a href="javascript:;" data-toggle="tooltip" data-title="{{i18n .Lang "doc.sidebar"}}"><i class="fa fa-columns item" aria-hidden="true" name="sidebar"></i></a>
@@ -108,7 +111,7 @@
             <a href="javascript:;" data-toggle="tooltip" data-title="{{i18n .Lang "doc.changetheme"}}"><i class="fa fa-paint-brush item" aria-hidden="true" name="changetheme"></i></a>
         </div>
 
-        <div class="editormd-group pull-right">
+        <div class="editormd-group">
             <!--<a target="_blank" href="{{urlfor "DocumentController.Read" ":key" .Model.Identify ":id" ""}}" data-toggle="tooltip" data-title="{{i18n .Lang "blog.preview"}}"><i class="fa fa-external-link" name="preview-open" aria-hidden="true"></i></a>-->
             <a href="{{urlfor "DocumentController.Read" ":key" .Model.Identify ":id" ""}}" data-toggle="tooltip" data-title="{{i18n .Lang "blog.preview"}}"><i class="fa fa-external-link" name="preview-open" aria-hidden="true"></i></a>
             <a href="javascript:;" data-toggle="tooltip" data-title="{{i18n .Lang "doc.publish"}}"><i class="fa fa-cloud-upload" name="release" aria-hidden="true"></i></a>
@@ -120,22 +123,31 @@
         </div>
 
         <div class="clearfix"></div>
-    </div>
+    </div> 
+
     <div class="manual-body">
+    {{/*
+    目录
+*/}}
         <div class="manual-category" id="manualCategory" style="position:absolute;">
             <div class="manual-nav">
                 <div class="nav-item active"><i class="fa fa-bars" aria-hidden="true"></i> {{i18n .Lang "doc.document"}}</div>
                 <div class="nav-plus pull-right" id="btnAddDocument" data-toggle="tooltip" data-title="{{i18n .Lang "doc.create_doc"}}" data-direction="right"><i class="fa fa-plus" aria-hidden="true"></i></div>
+               
                 <div class="clearfix"></div>
             </div>
             <div class="manual-tree" id="sidebar"> </div>
         </div>
+        {{/*
+    编辑器的主体
+*/}}
         <div class="manual-editor-container" id="manualEditorContainer" style="min-width: 920px;">
             <div class="manual-editormd">
                 <div id="docEditor" class="manual-editormd-active"></div>
             </div>
             <div class="manual-editor-status">
-                <div id="attachInfo" class="item">0 {{i18n .Lang "doc.attachments"}}</div>
+                <div id="attachInfo" class="item">0 -
+{{.EditorType}} - {{i18n .Lang "doc.attachments"}}</div>
             </div>
         </div>
 
@@ -184,6 +196,21 @@
                     <div class="col-lg-4">
                         <label>
                             <input type="radio" name="is_open" value="2"> {{i18n .Lang "doc.empty_contents"}}<span class="text">{{i18n .Lang "doc.empty_contents_desc"}}</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="3"> {{i18n .Lang "doc.word_contents"}}<span class="text">{{i18n .Lang "doc.word_contents_desc"}}</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="4"> {{i18n .Lang "doc.excel_contents"}}<span class="text">{{i18n .Lang "doc.excel_contents_desc"}}</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            <input type="radio" name="is_open" value="5"> {{i18n .Lang "doc.ppt_contents"}}<span class="text">{{i18n .Lang "doc.ppt_contents_desc"}}</span>
                         </label>
                     </div>
                     <div class="clearfix"></div>

@@ -9,6 +9,8 @@ import (
 	"runtime"
 	"strings"
 
+	//"github.com/astaxie/beego"
+
 	_ "github.com/beego/beego/v2/server/web/session/memcache"
 	_ "github.com/beego/beego/v2/server/web/session/mysql"
 	_ "github.com/beego/beego/v2/server/web/session/redis"
@@ -63,5 +65,13 @@ func main() {
 	} else {
 		d.Run()
 	}
+	// 设置vue静态访问映射路径
+	/*vueStaticDir := beego.AppConfig.String("vueStaticDir")
+	beego.SetStaticPath("/vue-admin", vueStaticDir+"index.html")
+	beego.SetStaticPath("/vue-admin/css", vueStaticDir+"css")
+	beego.SetStaticPath("/vue-admin/fonts", vueStaticDir+"fonts")
+	beego.SetStaticPath("/vue-admin/img", vueStaticDir+"img")
+	beego.SetStaticPath("/vue-admin/js", vueStaticDir+"js")*/
 
+	// beego.Run()
 }

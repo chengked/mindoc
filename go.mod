@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/beego/beego v1.12.12
 	github.com/beego/beego/v2 v2.0.5
 	github.com/beego/i18n v0.0.0-20161101132742-e9308947f407
 	github.com/boombuler/barcode v1.0.1
@@ -13,7 +14,7 @@ require (
 	github.com/lib/pq v1.10.5
 	github.com/lifei6671/gocaptcha v0.2.0
 	github.com/mattn/go-runewidth v0.0.13
-	github.com/mattn/go-sqlite3 v1.14.15
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/russross/blackfriday/v2 v2.1.0
 )

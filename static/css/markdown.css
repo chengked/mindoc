@@ -34,6 +34,7 @@ body .scrollbar-track-color {
     padding: 5px 5px 5px 5px;
     position: fixed;
     width: 100%;
+    left: 280px;
 }
 
 .manual-category {
@@ -41,7 +42,7 @@ body .scrollbar-track-color {
     position: fixed;
     border-top: 1px solid #DDDDDD;
     bottom: 0;
-    top: 40px;
+    top: 0px;
     background-color: #FAFAFA;
     left: 0;
     right: 0;
@@ -566,7 +567,7 @@ iframe.cherry-dialog-iframe {
 }
 
 @media screen and (max-width: 839px) {
-  .toc {
-    display: none !important;
-  }
+    .toc {
+        display: none !important;
+    }
 }

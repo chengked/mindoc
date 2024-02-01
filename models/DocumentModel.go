@@ -43,7 +43,8 @@ type Document struct {
 	ViewCount     int           `orm:"column(view_count);type(int);description(浏览量)" json:"view_count"`
 	AttachList    []*Attachment `orm:"-" json:"attach"`
 	//i18n
-	Lang string `orm:"-"`
+	Lang       string `orm:"-"`
+	EditorType int    `orm:"column(editor_type);type(int);index;default(0);description(编辑器类型：0-markdown 1-onlyoffice)" json:"editor_type"`
 }
 
 // 多字段唯一键
