@@ -260,6 +260,7 @@ func (c *DocumentController) Edit() {
 		c.ShowErrorPage(404, i18n.Tr(c.Lang, "message.project_id_error"))
 	}
 
+	//c.Redirect(302, conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+ctx.Request.URL.RequestURI()))
 	bookResult := models.NewBookResult()
 
 	var err error
