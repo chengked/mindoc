@@ -24,8 +24,9 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login',name:'login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404',name:'404', component: () => import('@/views/404'), hidden: true },
-  { path: '/edit-doc',name:'edit-doc', component: () => import('@/views/edit-doc'), hidden: true },
-  { path: '/edit-doc/:key/:id',name:'edit-doc2', component: () => import('@/views/edit-doc'), hidden: true },
+  { path: '/edit-doc',name:'editDoc', component: () => import('@/views/edit-doc'), hidden: true },
+  { path: '/edit-doc/:key/:id',name:'editDoc2', component: () => import('@/views/edit-doc'), hidden: true },
+  { path: '/edit-doc/:key',name:'editDoc3', component: () => import('@/views/edit-doc'), hidden: true },
   {
     path: '/',
     component: Layout,

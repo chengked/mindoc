@@ -322,6 +322,78 @@ func (c *DocumentController) Edit() {
 	}
 }
 
+// 编辑文档
+func (c *DocumentController) Tree() {
+	c.Prepare()
+
+	identify := c.Ctx.Input.Param(":key")
+	if identify == "" {
+		c.ShowErrorPage(404, i18n.Tr(c.Lang, "message.project_id_error"))
+	}
+
+	//c.Redirect(302, conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+ctx.Request.URL.RequestURI()))
+	bookResult := models.NewBookResult()
+
+	var err error
+	// 如果是管理者，则不判断权限
+	if c.Member.IsAdministrator() {
+		book, err := models.NewBook().FindByFieldFirst("identify", identify)
+		if err != nil {
+			c.JsonResult(6002, i18n.Tr(c.Lang, "message.item_not_exist_or_no_permit"))
+		}
+
+		bookResult = models.NewBookResult().ToBookResult(*book)
+	} else {
+		bookResult, err = models.NewBookResult().FindByIdentify(identify, c.Member.MemberId)
+
+		if err != nil {
+			if err == orm.ErrNoRows || err == models.ErrPermissionDenied {
+				c.ShowErrorPage(403, i18n.Tr(c.Lang, "message.item_not_exist_or_no_permit"))
+			} else {
+				logs.Error("查询项目时出错 -> ", err)
+				c.ShowErrorPage(500, i18n.Tr(c.Lang, "message.system_error"))
+			}
+			return
+		}
+		if bookResult.RoleId == conf.BookObserver {
+			c.JsonResult(6002, i18n.Tr(c.Lang, "message.item_not_exist_or_no_permit"))
+		}
+	}
+
+	c.TplName = fmt.Sprintf("document/%s_edit_template.tpl", bookResult.Editor)
+
+	c.Data["Model"] = bookResult
+
+	r, _ := json.Marshal(bookResult)
+
+	c.Data["ModelResult"] = template.JS(string(r))
+
+	c.Data["Result"] = template.JS("[]")
+
+	trees, err := models.NewDocument().FindDocumentTree(bookResult.BookId)
+
+	if err != nil {
+		logs.Error("FindDocumentTree => ", err)
+	} else {
+		if len(trees) > 0 {
+			if jtree, err := json.Marshal(trees); err == nil {
+				c.Data["Result"] = template.JS(string(jtree))
+			}
+		} else {
+			c.Data["Result"] = template.JS("[]")
+		}
+	}
+
+	c.Data["BaiDuMapKey"] = web.AppConfig.DefaultString("baidumapkey", "")
+
+	if conf.GetUploadFileSize() > 0 {
+		c.Data["UploadFileSize"] = conf.GetUploadFileSize()
+	} else {
+		c.Data["UploadFileSize"] = "undefined"
+	}
+	c.JsonResult(0, "ok", c.Data["Result"])
+}
+
 // 创建一个文档
 func (c *DocumentController) Create() {
 	identify := c.GetString("identify")

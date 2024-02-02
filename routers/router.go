@@ -235,11 +235,12 @@ func init() {
 
 	web.Router("/api/attach/remove/", &controllers.DocumentController{}, "post:RemoveAttachment")
 	//编辑页
-	//web.Router("/api/:key/edit/?:id", &controllers.DocumentController{}, "*:Edit")
+	web.Router("/api/:key/edit/?:id", &controllers.DocumentController{}, "*:Edit")
 	web.Router("/api/upload", &controllers.DocumentController{}, "post:Upload")
 	web.Router("/api/:key/create", &controllers.DocumentController{}, "post:Create")
 	web.Router("/api/:key/delete", &controllers.DocumentController{}, "post:Delete")
 	web.Router("/api/:key/content/?:id", &controllers.DocumentController{}, "*:Content")
+	web.Router("/api/:key/tree", &controllers.DocumentController{}, "*:Tree")
 	web.Router("/api/:key/compare/:id", &controllers.DocumentController{}, "*:Compare")
 	web.Router("/api/search/user/:key", &controllers.SearchController{}, "*:User")
 
@@ -271,9 +272,9 @@ func init() {
 
 	vueStaticDir, _ := web.AppConfig.String("vueStaticDir")
 	web.SetStaticPath("/vue-editor", vueStaticDir+"index.html")
-	web.SetStaticPath("/vue-editor/css", vueStaticDir+"css")
-	web.SetStaticPath("/vue-editor/fonts", vueStaticDir+"fonts")
-	web.SetStaticPath("/vue-editor/img", vueStaticDir+"img")
-	web.SetStaticPath("/vue-editor/js", vueStaticDir+"js")
-	web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
+	web.SetStaticPath("/vue-editor/css", vueStaticDir+"/vue-editor/css")
+	web.SetStaticPath("/vue-editor/fonts", vueStaticDir+"/vue-editor/fonts")
+	web.SetStaticPath("/vue-editor/img", vueStaticDir+"/vue-editor/img")
+	web.SetStaticPath("/vue-editor/js", vueStaticDir+"/vue-editor/js")
+	//web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
 }

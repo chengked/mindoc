@@ -16,6 +16,7 @@ const DASHBOARDS = HOST + '/api/admin/dashboards';
 
 const Content = HOST + '/api/mindoc/content/10'
 export default {
+  HOST,
   LOGIN,
   ME,
   POSTS,
