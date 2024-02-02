@@ -77,6 +77,7 @@ func singleJoiningSlash(a, b string) string {
 }
 
 func init() {
+
 	web.Any("/hello-any", func(ctx *context.Context) {
 		ctx.Output.Body([]byte("hello any demo"))
 	})
@@ -233,6 +234,7 @@ func init() {
 	web.Router("/api/template/remove", &controllers.TemplateController{}, "post:Delete")
 
 	web.Router("/api/attach/remove/", &controllers.DocumentController{}, "post:RemoveAttachment")
+	//编辑页
 	web.Router("/api/:key/edit/?:id", &controllers.DocumentController{}, "*:Edit")
 	web.Router("/api/upload", &controllers.DocumentController{}, "post:Upload")
 	web.Router("/api/:key/create", &controllers.DocumentController{}, "post:Create")
@@ -268,9 +270,9 @@ func init() {
 	web.Router("/items/:key", &controllers.ItemsetsController{}, "get:List")
 
 	vueStaticDir, _ := web.AppConfig.String("vueStaticDir")
-	web.SetStaticPath("/vue-admin", vueStaticDir+"index.html")
-	web.SetStaticPath("/vue-admin/css", vueStaticDir+"css")
-	web.SetStaticPath("/vue-admin/fonts", vueStaticDir+"fonts")
-	web.SetStaticPath("/vue-admin/img", vueStaticDir+"img")
-	web.SetStaticPath("/vue-admin/js", vueStaticDir+"js")
+	web.SetStaticPath("/vue-editor", vueStaticDir+"index.html")
+	web.SetStaticPath("/vue-editor/css", vueStaticDir+"css")
+	web.SetStaticPath("/vue-editor/fonts", vueStaticDir+"fonts")
+	web.SetStaticPath("/vue-editor/img", vueStaticDir+"img")
+	web.SetStaticPath("/vue-editor/js", vueStaticDir+"js")
 }

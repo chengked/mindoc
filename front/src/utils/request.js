@@ -6,7 +6,8 @@ import { getToken } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000 // 请求超时时间
+  timeout: 5000, // 请求超时时间,
+  withCredentials: true
 })
 
 // request拦截器
@@ -25,11 +26,11 @@ service.interceptors.request.use(
 )
 
 // response 拦截器
-service.interceptors.response.use(
+/*service.interceptors.response.use(
   response => {
-    /**
+    /!**
      * code为非20000是抛错 可结合自己业务进行修改
-     */
+     *!/
     const res = response.data
     const is_sm_ms = (response.config.url.search("sm.ms") != -1) // 不是请求sm.ms
     if (res.code !== 0 && !is_sm_ms) {
@@ -71,6 +72,6 @@ service.interceptors.response.use(
     })
     return Promise.reject(error)
   }
-)
+)*/
 
 export default service

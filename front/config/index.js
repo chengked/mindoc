@@ -56,7 +56,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'vue-admin', // 打包输出的目录
+    assetsSubDirectory: 'vue-editor', // 打包输出的目录
 
     /**
      * You can set by youself according to actual condition
