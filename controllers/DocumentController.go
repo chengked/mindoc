@@ -402,7 +402,7 @@ func (c *DocumentController) Create() {
 	json.Unmarshal(c.Ctx.Input.RequestBody, &reqData)
 
 	identify := c.GetString("identify", reqData["identify"].(string))
-	docIdentify := c.GetString("doc_identify", reqData["doc_identify"].(string))
+	docIdentify := c.GetString("doc_identify", reqData["doc_identify"].(string), strings.TrimSpace(identify))
 	docName := c.GetString("doc_name", reqData["doc_name"].(string))
 	parentId, _ := c.GetInt("parent_id", int(reqData["parent_id"].(float64)), 0)
 	docId, _ := c.GetInt("doc_id", int(reqData["doc_id"].(float64)), 0)

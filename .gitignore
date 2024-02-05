@@ -34,4 +34,3 @@ database/mindoc.db
 /runtime
 /front/node_modules/
 /front/dist/
-/static/front-vue/

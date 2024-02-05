@@ -235,7 +235,7 @@ func init() {
 
 	web.Router("/api/attach/remove/", &controllers.DocumentController{}, "post:RemoveAttachment")
 	//编辑页
-	web.Router("/api/:key/edit/?:id", &controllers.DocumentController{}, "*:Edit")
+	//web.Router("/api/:key/edit/?:id", &controllers.DocumentController{}, "*:Edit")
 	web.Router("/api/upload", &controllers.DocumentController{}, "post:Upload")
 	web.Router("/api/:key/create", &controllers.DocumentController{}, "post:Create")
 	web.Router("/api/:key/delete", &controllers.DocumentController{}, "post:Delete")
@@ -277,5 +277,5 @@ func init() {
 	web.SetStaticPath("/vue-editor/fonts", vueStaticDir+"/vue-editor/fonts")
 	web.SetStaticPath("/vue-editor/img", vueStaticDir+"/vue-editor/img")
 	web.SetStaticPath("/vue-editor/js", vueStaticDir+"/vue-editor/js")
-	//web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
+	web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
 }
