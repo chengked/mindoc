@@ -346,7 +346,7 @@ func (book *Book) FindByField(field string, value interface{}, cols ...string) (
 // 根据指定字段查询一个结果.
 func (book *Book) FindByFieldFirst(field string, value interface{}) (*Book, error) {
 	o := orm.NewOrm()
-
+	logs.Info(book.TableNameWithPrefix(), field, value)
 	err := o.QueryTable(book.TableNameWithPrefix()).Filter(field, value).One(book)
 
 	return book, err

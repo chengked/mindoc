@@ -396,12 +396,18 @@ func (c *DocumentController) Tree() {
 
 // 创建一个文档
 func (c *DocumentController) Create() {
-	identify := c.GetString("identify")
-	docIdentify := c.GetString("doc_identify")
-	docName := c.GetString("doc_name")
-	parentId, _ := c.GetInt("parent_id", 0)
-	docId, _ := c.GetInt("doc_id", 0)
-	isOpen, _ := c.GetInt("is_open", 0)
+	c.Prepare()
+	reqData := make(map[string]interface{})
+
+	json.Unmarshal(c.Ctx.Input.RequestBody, &reqData)
+
+	identify := c.GetString("identify", reqData["identify"].(string))
+	docIdentify := c.GetString("doc_identify", reqData["doc_identify"].(string))
+	docName := c.GetString("doc_name", reqData["doc_name"].(string))
+	parentId, _ := c.GetInt("parent_id", int(reqData["parent_id"].(float64)), 0)
+	docId, _ := c.GetInt("doc_id", int(reqData["doc_id"].(float64)), 0)
+	isOpen, _ := c.GetInt("is_open", int(reqData["is_open"].(float64)), 0)
+	content := c.GetString("content", reqData["content"].(string))
 	//editoType, _ := c.GetInt("editor_type", 0)
 	if identify == "" {
 		c.JsonResult(6001, i18n.Tr(c.Lang, "message.param_error"))
@@ -415,6 +421,7 @@ func (c *DocumentController) Create() {
 
 	// 如果是超级管理员则不判断权限
 	if c.Member.IsAdministrator() {
+		logs.Info(identify)
 		book, err := models.NewBook().FindByFieldFirst("identify", identify)
 		if err != nil {
 			logs.Error(err)
@@ -461,6 +468,7 @@ func (c *DocumentController) Create() {
 	document.DocumentName = docName
 	document.ParentId = parentId
 	document.EditorType = 0
+	document.Content = content
 	if isOpen == 1 {
 		document.IsOpen = 1
 	} else if isOpen == 2 {

@@ -240,6 +240,7 @@ func init() {
 	web.Router("/api/:key/create", &controllers.DocumentController{}, "post:Create")
 	web.Router("/api/:key/delete", &controllers.DocumentController{}, "post:Delete")
 	web.Router("/api/:key/content/?:id", &controllers.DocumentController{}, "*:Content")
+	// 树状目录
 	web.Router("/api/:key/tree", &controllers.DocumentController{}, "*:Tree")
 	web.Router("/api/:key/compare/:id", &controllers.DocumentController{}, "*:Compare")
 	web.Router("/api/search/user/:key", &controllers.SearchController{}, "*:User")
