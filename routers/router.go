@@ -249,8 +249,10 @@ func init() {
 	web.Router("/history/delete", &controllers.DocumentController{}, "*:DeleteHistory")
 	web.Router("/history/restore", &controllers.DocumentController{}, "*:RestoreHistory")
 
-	web.Router("/docs/:key", &controllers.DocumentController{}, "*:Index")
+	//web.Router("/docs/:key", &controllers.DocumentController{}, "*:Index")
+	web.Router("/docs/:key/info", &controllers.DocumentController{}, "*:Info")
 	web.Router("/docs/:key/check-password", &controllers.DocumentController{}, "post:CheckPassword")
+	// 浏览
 	web.Router("/docs/:key/:id", &controllers.DocumentController{}, "*:Read")
 	web.Router("/docs/:key/search", &controllers.DocumentController{}, "post:Search")
 	web.Router("/export/:key", &controllers.DocumentController{}, "*:Export")
@@ -278,4 +280,5 @@ func init() {
 	web.SetStaticPath("/vue-editor/img", vueStaticDir+"/vue-editor/img")
 	web.SetStaticPath("/vue-editor/js", vueStaticDir+"/vue-editor/js")
 	web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
+	web.Router("/vue-editor/#/view-doc/:key", &controllers.DocumentController{}, "*:Index")
 }

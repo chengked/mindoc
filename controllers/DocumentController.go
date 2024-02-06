@@ -101,6 +101,29 @@ func (c *DocumentController) Index() {
 
 }
 
+// 文档首页
+func (c *DocumentController) Info() {
+	c.Prepare()
+
+	identify := c.Ctx.Input.Param(":key")
+	token := c.GetString("token")
+
+	if identify == "" {
+		c.ShowErrorPage(404, i18n.Tr(c.Lang, "message.item_not_exist"))
+	}
+
+	// 如果没有开启匿名访问则跳转到登录
+	if !c.EnableAnonymous && !c.isUserLoggedIn() {
+		promptUserToLogIn(c)
+		return
+	}
+
+	bookResult := c.isReadable(identify, token)
+
+	c.JsonResult(0, "ok", bookResult)
+
+}
+
 // CheckPassword : Handles password verification for private documents,
 // and front-end requests are made through Ajax.
 func (c *DocumentController) CheckPassword() {

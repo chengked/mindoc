@@ -62,6 +62,7 @@ func init() {
 	web.InsertFilter("/book", web.BeforeRouter, FilterUser)
 	web.InsertFilter("/book/*", web.BeforeRouter, FilterUser)
 	web.InsertFilter("/api/*", web.BeforeRouter, corsFunc)
+	web.InsertFilter("/docs/*", web.BeforeRouter, corsFunc)
 	web.InsertFilter("/api/*", web.BeforeRouter, FilterUser)
 	web.InsertFilter("/manage/*", web.BeforeRouter, FilterUser)
 
