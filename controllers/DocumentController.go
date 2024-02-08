@@ -431,7 +431,28 @@ func (c *DocumentController) Create() {
 	docId, _ := c.GetInt("doc_id", int(reqData["doc_id"].(float64)), 0)
 	isOpen, _ := c.GetInt("is_open", int(reqData["is_open"].(float64)), 0)
 	content := c.GetString("content", reqData["content"].(string))
-	//editoType, _ := c.GetInt("editor_type", 0)
+	editorType, _ := c.GetInt("editor_type", int(reqData["editor_type"].(float64)), 0)
+	docType := c.GetString("doc_type", reqData["doc_type"].(string))
+	filePath := c.GetString("file_path")
+	if editorType == 2 {
+		filePath2, err := reqData["file_path"]
+
+		if err {
+			filePath = filePath2.(string)
+		} else {
+			uploadFolder := "/uploads/office/"
+			filePath = uploadFolder + docIdentify + ".docx"
+			err2 := os.MkdirAll("."+uploadFolder, 0755)
+			if err2 != nil {
+				logs.Info(err2)
+			}
+			file, err := os.Create("." + filePath)
+			if err != nil {
+				logs.Info(err)
+			}
+			defer file.Close()
+		}
+	}
 	if identify == "" {
 		c.JsonResult(6001, i18n.Tr(c.Lang, "message.param_error"))
 	}
@@ -486,12 +507,13 @@ func (c *DocumentController) Create() {
 	document.BookId = bookId
 
 	document.Identify = docIdentify
-
+	document.DocType = docType
 	document.Version = time.Now().Unix()
 	document.DocumentName = docName
 	document.ParentId = parentId
-	document.EditorType = 0
+	document.EditorType = editorType
 	document.Content = content
+	document.FilePath = filePath
 	if isOpen == 1 {
 		document.IsOpen = 1
 	} else if isOpen == 2 {
@@ -500,7 +522,7 @@ func (c *DocumentController) Create() {
 		document.IsOpen = 0
 	} else {
 		document.IsOpen = isOpen
-		document.EditorType = 1
+		//document.EditorType = 1
 	}
 
 	if err := document.InsertOrUpdate(); err != nil {
@@ -789,9 +811,10 @@ func (c *DocumentController) RemoveAttachment() {
 // 删除文档
 func (c *DocumentController) Delete() {
 	c.Prepare()
-
-	identify := c.GetString("identify")
-	docId, err := c.GetInt("doc_id", 0)
+	reqData := make(map[string]interface{})
+	json.Unmarshal(c.Ctx.Input.RequestBody, &reqData)
+	identify := c.GetString("identify", reqData["identify"].(string))
+	docId, err := c.GetInt("doc_id", int(reqData["doc_id"].(float64)), 0)
 
 	bookId := 0
 
@@ -845,6 +868,10 @@ func (c *DocumentController) Delete() {
 func (c *DocumentController) Content() {
 	c.Prepare()
 
+	reqData := make(map[string]interface{})
+	json.Unmarshal(c.Ctx.Input.RequestBody, &reqData)
+
+	mode := c.GetString("mode") // 文档模式
 	identify := c.Ctx.Input.Param(":key")
 	docId, err := c.GetInt("doc_id")
 
@@ -952,11 +979,17 @@ func (c *DocumentController) Content() {
 				}
 			}()
 		}
-
+		if doc.EditorType == 2 {
+			doc.Config = *models.GetDocConfig(doc, identify, mode)
+		}
 		c.JsonResult(0, "ok", doc)
 	}
 
 	doc, err := models.NewDocument().Find(docId)
+
+	if doc.EditorType == 2 {
+		doc.Config = *models.GetDocConfig(doc, identify, mode)
+	}
 	if err != nil {
 		c.JsonResult(6003, i18n.Tr(c.Lang, "message.doc_not_exist"))
 		return
@@ -966,7 +999,6 @@ func (c *DocumentController) Content() {
 	if err == nil {
 		doc.AttachList = attach
 	}
-
 	c.JsonResult(0, "ok", doc)
 	c.Data["EditorType"] = doc.EditorType
 }
@@ -1474,4 +1506,44 @@ func promptUserToLogIn(c *DocumentController) {
 	} else {
 		c.Redirect(conf.URLFor("AccountController.Login")+"?url="+url.PathEscape(conf.BaseUrl+c.Ctx.Request.URL.RequestURI()), 302)
 	}
+}
+
+// 下载附件
+func (c *DocumentController) Download() {
+	c.Prepare()
+	identify := c.Ctx.Input.Param(":key")
+	docId, err := c.GetInt("doc_id")
+
+	if err != nil {
+		docId, _ = strconv.Atoi(c.Ctx.Input.Param(":id"))
+	}
+
+	// 如果是超级管理员，则忽略权限
+	if c.Member.IsAdministrator() {
+		book, err := models.NewBook().FindByFieldFirst("identify", identify)
+		if err != nil || book == nil {
+			c.JsonResult(6002, i18n.Tr(c.Lang, "message.item_not_exist_or_no_permit"))
+			return
+		}
+	} else {
+		bookResult, err := models.NewBook().FindByFieldFirst("identify", identify)
+
+		if err != nil || bookResult == nil {
+			logs.Error("项目不存在或权限不足 -> ", err)
+			c.JsonResult(6002, i18n.Tr(c.Lang, "message.item_not_exist_or_no_permit"))
+		}
+	}
+
+	if docId <= 0 {
+		c.JsonResult(6001, i18n.Tr(c.Lang, "message.param_error"))
+	}
+
+	doc, err := models.NewDocument().Find(docId)
+	if err != nil {
+		c.JsonResult(6003, i18n.Tr(c.Lang, "message.doc_not_exist"))
+		return
+	}
+
+	c.Ctx.Output.Download(filepath.Join(conf.WorkingDirectory, doc.FilePath), doc.DocumentName+".docx")
+	c.StopRun()
 }

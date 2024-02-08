@@ -43,8 +43,11 @@ type Document struct {
 	ViewCount     int           `orm:"column(view_count);type(int);description(浏览量)" json:"view_count"`
 	AttachList    []*Attachment `orm:"-" json:"attach"`
 	//i18n
-	Lang       string `orm:"-"`
-	EditorType int    `orm:"column(editor_type);type(int);index;default(0);description(编辑器类型：0-markdown 1-onlyoffice)" json:"editor_type"`
+	Lang       string       `orm:"-"`
+	Config     InfactConfig `orm:"-"`
+	EditorType int          `orm:"column(editor_type);type(int);index;default(0);description(编辑器类型：0-markdown 1-onlyoffice)" json:"editor_type"`
+	FilePath   string       `orm:"column(file_path);type(text);null;description(文件位置：/uploads/xx)" json:"file_path"`
+	DocType    string       `orm:"column(doc_type);type(text);null;description(文挡类型：word/cell/slide)" json:"doc_type"`
 }
 
 // 多字段唯一键

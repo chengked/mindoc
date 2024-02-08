@@ -240,6 +240,8 @@ func init() {
 	web.Router("/api/:key/create", &controllers.DocumentController{}, "post:Create")
 	web.Router("/api/:key/delete", &controllers.DocumentController{}, "post:Delete")
 	web.Router("/api/:key/content/?:id", &controllers.DocumentController{}, "*:Content")
+	// 文件下载
+	web.Router("/api/:key/file/?:id", &controllers.DocumentController{}, "get:Download")
 	// 树状目录
 	web.Router("/api/:key/tree", &controllers.DocumentController{}, "*:Tree")
 	web.Router("/api/:key/compare/:id", &controllers.DocumentController{}, "*:Compare")
@@ -281,4 +283,18 @@ func init() {
 	web.SetStaticPath("/vue-editor/js", vueStaticDir+"/vue-editor/js")
 	web.Router("/vue-editor/#/edit-doc/:key/?:id", &controllers.DocumentController{}, "*:Edit")
 	web.Router("/vue-editor/#/view-doc/:key", &controllers.DocumentController{}, "*:Index")
+
+	// onlyoffice
+	//回调函数
+	web.Router("/api/oo/callback", &controllers.OnlyController{}, "*:DocCallback")
+	//添加一个文档
+	//web.Router("/office/attachment", &controllers.OnlyController{}, "put:AddOnlyAttachment")
+	//访问一个文档
+	//web.Router("/office/:id:string", &controllers.OnlyController{}, "get:OnlyOffice")
+	//获取下载文件连接
+	//web.Router("/download/office/:id", &controllers.OnlyController{}, "get:DownloadDoc")
+	//强行覆盖文件内容
+	//web.Router("/office/overwrite/:id", &controllers.OnlyController{}, "post:OverwriteDoc")
+	// 设置路由
+	// web.Router("/ws/**", &controllers.WebsocketController{}, "get:WsHandler")
 }
