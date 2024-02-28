@@ -324,3 +324,5 @@ docker run -p 8181:8181 --name mindoc -e DB_ADAPTER=mysql -e MYSQL_PORT_3306_TCP
          - conf/
          - ...
      ```
+# onlyoffice 
+支持onlyoffice
